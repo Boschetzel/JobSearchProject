@@ -214,13 +214,13 @@ class GuiSearchWindow(SetUpDriverAndStoreData):
                         f"&geoId=&trk=public_jobs_jobs-search-bar_search-submit&position=1&pageNum=0")
 
         print("Connected to the website")
-        self.select_date_jobs_posted()
-        self.select_job_type()
-        self.select_experience_level()
-        self.select_job_location()
+        self.filter_date_jobs_posted()
+        self.filter_job_type()
+        self.filter_experience_level()
+        self.filter_job_location()
         self.get_total_search_results()
         self.auto_scroll_page()
-        self.get_results()
+        self.get_search_results()
         self.make_dataframe()
         self.save_csv_file()
         self.driver.close()
@@ -235,7 +235,7 @@ class GuiSearchWindow(SetUpDriverAndStoreData):
     """Method to select the timeframe when the job was posted. 
        User have 4 choices [Last 24 h, Past Week, Past Month, Any Time] """
 
-    def select_date_jobs_posted(self):
+    def filter_date_jobs_posted(self):
         # Select the "Any Time" btn and click it
         self.driver.find_element(By.XPATH, "//button[contains(text(),'Any Time')]").click()
         time.sleep(2)
@@ -283,7 +283,7 @@ class GuiSearchWindow(SetUpDriverAndStoreData):
     """Method to select the job type.
        User have the following options: [Full-Time, Contract, Internship, Other]"""
 
-    def select_job_type(self):
+    def filter_job_type(self):
         # Select "Job-Type" btn and click it
         self.driver.find_element(By.XPATH, "//button[contains(text(),'Job Type')]").click()
         time.sleep(2)
@@ -331,7 +331,7 @@ class GuiSearchWindow(SetUpDriverAndStoreData):
     """Method to select the experience level.
        User have 4 choices : [Internship, Entry-Level, Associate, Mid-Senior, Director]"""
 
-    def select_experience_level(self):
+    def filter_experience_level(self):
         # Select "Experience Level" btn and click it
         self.driver.find_element(By.XPATH, "//button[contains(text(),'Experience Level')]").click()
         time.sleep(2)
@@ -383,7 +383,7 @@ class GuiSearchWindow(SetUpDriverAndStoreData):
                                            "'public_jobs_f_WT']").click()
         time.sleep(2)
 
-    def select_job_location(self):
+    def filter_job_location(self):
         # Select "On-Site/Remote" btn and click it
         self.driver.find_element(By.XPATH, "//button[contains(text(),'On-site/Remote')]").click()
         time.sleep(2)
@@ -443,7 +443,7 @@ class GuiSearchWindow(SetUpDriverAndStoreData):
                 time.sleep(0.1)
                 pass
 
-    def get_results(self):
+    def get_search_results(self):
 
         # Get all the job listed
         job_lists = self.driver.find_element(By.CLASS_NAME, "jobs-search__results-list")
