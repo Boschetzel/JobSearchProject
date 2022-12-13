@@ -5,8 +5,10 @@ import time
 import os
 import pandas as pd
 
+"""A Class which set up webdriver and created empty lists to store the data collected from webscrapping """
 
-class GetElements:
+
+class SetUpDriverAndStoreData:
     def __init__(self):
         super().__init__()
         self.driver = webdriver.Chrome()
@@ -19,7 +21,10 @@ class GetElements:
         self.driver.implicitly_wait(10)
 
 
-class GuiSearchWindow(GetElements):
+"""A class which contains the GUI and code for all the application features"""
+
+
+class GuiSearchWindow(SetUpDriverAndStoreData):
     def __init__(self):
         super().__init__()
 
@@ -39,6 +44,8 @@ class GuiSearchWindow(GetElements):
         self.ui_job_title.setGeometry(QtCore.QRect(160, 100, 171, 22))
         self.ui_job_title.setObjectName("ui_job_title")
 
+        # FILTER GUI CHECKBOXES
+        #
         self.entry_level_chk_box = QtWidgets.QCheckBox(self.centralwidget)
         self.entry_level_chk_box.setGeometry(QtCore.QRect(160, 200, 81, 20))
         self.entry_level_chk_box.setObjectName("entry_level_chk_box")
@@ -206,28 +213,18 @@ class GuiSearchWindow(GetElements):
         self.driver.get(f"https://www.linkedin.com/jobs/search?keywords={job_title}&location={location}"
                         f"&geoId=&trk=public_jobs_jobs-search-bar_search-submit&position=1&pageNum=0")
 
-        print("Reached here")
+        print("Connected to the website")
         self.select_date_jobs_posted()
-        print("1")
         self.select_job_type()
-        print("2")
         self.select_experience_level()
-        print("3")
         self.select_job_location()
-        print("4")
         self.get_total_search_results()
-        print("5")
         self.auto_scroll_page()
-        print("6")
         self.get_results()
-
-        print("7")
         self.make_dataframe()
-        print("8")
         self.save_csv_file()
-        print("9")
         self.driver.close()
-        print("Done")
+        print("Done collecting data ....")
         MainWindow.close()
 
     def click_done_btn_date_posted(self):
