@@ -18,7 +18,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=find_packages(),
-    install_requires=['selenium' ,'pyqt5'],
+    install_requires=['selenium' ,'pyqt5','pandas'],
     keywords=['python', 'job search', 'pandas', 'selenium', 'linkedin'],
     url="https://github.com/Boschetzel/JobSearchProject",
     classifiers=[

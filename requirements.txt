@@ -1,0 +1,4 @@
+pandas~=1.5.1
+selenium~=4.6.0
+PyQt5~=5.15.7
+setuptools~=60.2.0
