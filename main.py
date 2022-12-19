@@ -4,6 +4,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import time
 import os
 import pandas as pd
+from GUI.results_gui import ResultsGui
+from df_model import PandasModel
 
 """A Class which set up webdriver and created empty lists to store the data collected from webscrapping """
 
@@ -33,6 +35,8 @@ class GuiSearchWindow(SetUpDriverAndStoreData):
         MainWindow.resize(1128, 603)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
+
+        # JOB TITLE LABEL
         self.job_title_lbl = QtWidgets.QLabel(self.centralwidget)
         self.job_title_lbl.setGeometry(QtCore.QRect(80, 100, 55, 16))
         font = QtGui.QFont()
@@ -40,16 +44,19 @@ class GuiSearchWindow(SetUpDriverAndStoreData):
         font.setWeight(75)
         self.job_title_lbl.setFont(font)
         self.job_title_lbl.setObjectName("job_title_lbl")
+
+        # SEARCH JOB TITLE USER INPUT
         self.ui_job_title = QtWidgets.QLineEdit(self.centralwidget)
         self.ui_job_title.setGeometry(QtCore.QRect(160, 100, 171, 22))
         self.ui_job_title.setObjectName("ui_job_title")
 
         # FILTER GUI CHECKBOXES
-        #
+        # Entry level check box
         self.entry_level_chk_box = QtWidgets.QCheckBox(self.centralwidget)
         self.entry_level_chk_box.setGeometry(QtCore.QRect(160, 200, 81, 20))
         self.entry_level_chk_box.setObjectName("entry_level_chk_box")
 
+        # Position label
         self.position_lbl = QtWidgets.QLabel(self.centralwidget)
         self.position_lbl.setGeometry(QtCore.QRect(80, 170, 55, 16))
         font = QtGui.QFont()
@@ -58,22 +65,27 @@ class GuiSearchWindow(SetUpDriverAndStoreData):
         self.position_lbl.setFont(font)
         self.position_lbl.setObjectName("position_lbl")
 
+        # Internship level check box
         self.internship_chk_box = QtWidgets.QCheckBox(self.centralwidget)
         self.internship_chk_box.setGeometry(QtCore.QRect(160, 170, 81, 20))
         self.internship_chk_box.setObjectName("internship_chk_box")
 
+        # Associate level check box
         self.associate_chk_box = QtWidgets.QCheckBox(self.centralwidget)
         self.associate_chk_box.setGeometry(QtCore.QRect(160, 230, 81, 20))
         self.associate_chk_box.setObjectName("associate_chk_box")
 
+        # Mid-Senior level check box
         self.mid_sr_chk_box = QtWidgets.QCheckBox(self.centralwidget)
         self.mid_sr_chk_box.setGeometry(QtCore.QRect(160, 260, 121, 20))
         self.mid_sr_chk_box.setObjectName("mid_sr_chk_box")
 
+        # Director level check box
         self.director_chk_box = QtWidgets.QCheckBox(self.centralwidget)
         self.director_chk_box.setGeometry(QtCore.QRect(160, 290, 81, 20))
         self.director_chk_box.setObjectName("director_chk_box")
 
+        # LOCATION LABEL
         self.location_lbl = QtWidgets.QLabel(self.centralwidget)
         self.location_lbl.setGeometry(QtCore.QRect(310, 170, 55, 16))
         font = QtGui.QFont()
@@ -82,22 +94,27 @@ class GuiSearchWindow(SetUpDriverAndStoreData):
         self.location_lbl.setFont(font)
         self.location_lbl.setObjectName("location_lbl")
 
+        # On site check box
         self.on_site_chk_box = QtWidgets.QCheckBox(self.centralwidget)
         self.on_site_chk_box.setGeometry(QtCore.QRect(390, 210, 81, 20))
         self.on_site_chk_box.setObjectName("on_site_chk_box")
 
+        # Location user input
         self.ui_location = QtWidgets.QLineEdit(self.centralwidget)
         self.ui_location.setGeometry(QtCore.QRect(390, 170, 113, 22))
         self.ui_location.setObjectName("ui_location")
 
+        # Remote check box
         self.remote_chk_box = QtWidgets.QCheckBox(self.centralwidget)
         self.remote_chk_box.setGeometry(QtCore.QRect(390, 240, 81, 20))
         self.remote_chk_box.setObjectName("remote_chk_box")
 
+        # Hybrid check box
         self.hybrid_chk_box = QtWidgets.QCheckBox(self.centralwidget)
         self.hybrid_chk_box.setGeometry(QtCore.QRect(390, 270, 81, 20))
         self.hybrid_chk_box.setObjectName("hybrid_chk_box")
 
+        # Date poste label
         self.date_posted_lbl = QtWidgets.QLabel(self.centralwidget)
         self.date_posted_lbl.setGeometry(QtCore.QRect(530, 170, 81, 16))
         font = QtGui.QFont()
@@ -106,22 +123,27 @@ class GuiSearchWindow(SetUpDriverAndStoreData):
         self.date_posted_lbl.setFont(font)
         self.date_posted_lbl.setObjectName("date_posted_lbl")
 
+        # Any time radio button
         self.any_time_chk_box = QtWidgets.QRadioButton(self.centralwidget)
         self.any_time_chk_box.setGeometry(QtCore.QRect(530, 200, 81, 20))
         self.any_time_chk_box.setObjectName("any_time_chk_box")
 
+        # Past week radio button
         self.past_week_chk_box = QtWidgets.QRadioButton(self.centralwidget)
         self.past_week_chk_box.setGeometry(QtCore.QRect(530, 230, 81, 20))
         self.past_week_chk_box.setObjectName("past_week_chk_box")
 
+        # Past 24 hour radio button
         self.past_24h_chk_boxx = QtWidgets.QRadioButton(self.centralwidget)
         self.past_24h_chk_boxx.setGeometry(QtCore.QRect(530, 260, 81, 20))
         self.past_24h_chk_boxx.setObjectName("past_24h_chk_boxx")
 
+        # Past month radio button
         self.past_month_chk_box = QtWidgets.QRadioButton(self.centralwidget)
         self.past_month_chk_box.setGeometry(QtCore.QRect(530, 290, 91, 20))
         self.past_month_chk_box.setObjectName("past_month_chk_box")
 
+        # JOB TYPE LABEL
         self.job_type_lbl = QtWidgets.QLabel(self.centralwidget)
         self.job_type_lbl.setGeometry(QtCore.QRect(660, 170, 71, 16))
         font = QtGui.QFont()
@@ -130,18 +152,22 @@ class GuiSearchWindow(SetUpDriverAndStoreData):
         self.job_type_lbl.setFont(font)
         self.job_type_lbl.setObjectName("job_type_lbl")
 
+        # Full time check box
         self.full_time_chk_box = QtWidgets.QCheckBox(self.centralwidget)
         self.full_time_chk_box.setGeometry(QtCore.QRect(740, 170, 91, 20))
         self.full_time_chk_box.setObjectName("full_time_chk_box")
 
+        # Contract check box
         self.contract_chk_box = QtWidgets.QCheckBox(self.centralwidget)
         self.contract_chk_box.setGeometry(QtCore.QRect(740, 200, 91, 20))
         self.contract_chk_box.setObjectName("contract_chk_box")
 
+        # Internship check box
         self.internship_chk_box_2 = QtWidgets.QCheckBox(self.centralwidget)
         self.internship_chk_box_2.setGeometry(QtCore.QRect(740, 230, 91, 20))
         self.internship_chk_box_2.setObjectName("internship_chk_box_2")
 
+        # SEARCH BUTTON
         self.search_box_btn = QtWidgets.QPushButton(self.centralwidget)
         self.search_box_btn.setGeometry(QtCore.QRect(160, 420, 181, 41))
         font = QtGui.QFont()
@@ -151,6 +177,17 @@ class GuiSearchWindow(SetUpDriverAndStoreData):
         self.search_box_btn.setFont(font)
         self.search_box_btn.setObjectName("search_box_btn")
 
+        # RESULTS BUTTON
+        self.results_btn = QtWidgets.QPushButton(self.centralwidget)
+        self.results_btn.setGeometry(QtCore.QRect(160, 500, 181, 41))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.results_btn.setFont(font)
+        self.results_btn.setObjectName("results_btn")
+
+        # JOB TYPE LABEL
         self.label_6 = QtWidgets.QLabel(self.centralwidget)
         self.label_6.setGeometry(QtCore.QRect(370, 10, 491, 41))
         font = QtGui.QFont()
@@ -160,6 +197,7 @@ class GuiSearchWindow(SetUpDriverAndStoreData):
         self.label_6.setFont(font)
         self.label_6.setObjectName("label_6")
 
+        # Other check box
         self.other_chk_box = QtWidgets.QCheckBox(self.centralwidget)
         self.other_chk_box.setGeometry(QtCore.QRect(740, 260, 91, 20))
         self.other_chk_box.setObjectName("other_chk_box")
@@ -178,6 +216,7 @@ class GuiSearchWindow(SetUpDriverAndStoreData):
 
         self.search_box_btn.clicked.connect(self.start_search)
 
+    # PYQT5 auto generated method
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
@@ -202,6 +241,7 @@ class GuiSearchWindow(SetUpDriverAndStoreData):
         self.contract_chk_box.setText(_translate("MainWindow", "Contract"))
         self.internship_chk_box_2.setText(_translate("MainWindow", "Internship"))
         self.search_box_btn.setText(_translate("MainWindow", "Search"))
+        self.results_btn.setText(_translate("MainWindow", "Show Results"))
         self.label_6.setText(_translate("MainWindow", "Job search application for LinkedIn "))
         self.other_chk_box.setText(_translate("MainWindow", "Other"))
 
@@ -232,9 +272,8 @@ class GuiSearchWindow(SetUpDriverAndStoreData):
         print("Done making data frame ...")
         self.save_csv_file()
         print("Done making csv file ...")
-        self.driver.close()
+        #self.driver.close()
         print("Finished ....data collected and saved to csv file")
-        MainWindow.close()
 
     def click_done_btn_date_posted(self):
         self.driver.find_element(By.XPATH,
@@ -432,6 +471,9 @@ class GuiSearchWindow(SetUpDriverAndStoreData):
             jobs_num = int(jobs_num)
 
         jobs_num = int(jobs_num)
+
+        # For testing - check the total number of results
+        print(jobs_num)
         return jobs_num
 
     def auto_scroll_page(self):
@@ -496,7 +538,16 @@ class GuiSearchWindow(SetUpDriverAndStoreData):
         df_final = temp_2.join(df_links)
         df_final2 = df_final.join(df_location)
 
+
         # TODO - make link clickable in DF
+        self.Dialog = QtWidgets.QDialog()
+        self.ui_results = ResultsGui()
+        self.ui_results.setupUi(self.Dialog)
+        self.Dialog.show()
+
+        model = PandasModel(df_final2)
+        self.ui_results.tableView.setModel(model)
+
         return df_final2
 
     def save_csv_file(self):
@@ -512,6 +563,8 @@ class GuiSearchWindow(SetUpDriverAndStoreData):
 
         # Save to *.csv
         df = self.make_dataframe().to_csv(path)
+
+
         return df
 
 
