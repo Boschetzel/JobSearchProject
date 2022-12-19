@@ -58,6 +58,8 @@ The JobSearchApplication allows the user to filter and search data based on the 
 
 This project is still in version 0.0.1 and subject to further changes.
 
+Next step is to implement the results GUI.
+
 If you like this project remember to leave a ⭐! 
 
 
