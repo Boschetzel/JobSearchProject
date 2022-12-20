@@ -1,10 +1,9 @@
-
 from setuptools import setup, find_packages
 
 with open("README.md", "r", encoding="utf8") as fh:
     long_description = fh.read()
 
-VERSION = '0.0.1'
+VERSION = '0.1.1'
 DESCRIPTION = 'Job Search Application'
 LONG_DESCRIPTION = 'An application to auto search on LinkedIn for jobs based on filters.'
 
@@ -18,7 +17,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=find_packages(),
-    install_requires=['selenium' ,'pyqt5','pandas'],
+    install_requires=['selenium', 'pyqt5', 'pandas'],
     keywords=['python', 'job search', 'pandas', 'selenium', 'linkedin'],
     url="https://github.com/Boschetzel/JobSearchProject",
     classifiers=[

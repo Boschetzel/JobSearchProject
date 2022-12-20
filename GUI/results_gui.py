@@ -26,12 +26,18 @@ class ResultsGui:
         font.setWeight(75)
         self.label.setFont(font)
         self.label.setObjectName("label")
+
+        # Filter button
         self.filter_btn = QtWidgets.QPushButton(Dialog)
         self.filter_btn.setGeometry(QtCore.QRect(210, 640, 93, 28))
         self.filter_btn.setObjectName("filter_btn")
+
+        # Filter by column radio button
         self.filter_col_btn = QtWidgets.QRadioButton(Dialog)
         self.filter_col_btn.setGeometry(QtCore.QRect(330, 640, 95, 21))
         self.filter_col_btn.setObjectName("filter_col_btn")
+
+        # Filter by row radio button
         self.filter_row_btn = QtWidgets.QRadioButton(Dialog)
         self.filter_row_btn.setGeometry(QtCore.QRect(440, 640, 95, 20))
         self.filter_row_btn.setObjectName("filter_row_btn")
@@ -50,6 +56,7 @@ class ResultsGui:
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     Dialog = QtWidgets.QDialog()
     ui = ResultsGui()

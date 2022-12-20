@@ -5,9 +5,11 @@ import time
 import os
 import pandas as pd
 from GUI.results_gui import ResultsGui
+from GUI.filter_by_column import FilterByColumn
+from GUI.filter_by_row import FilterByRow
 from df_model import PandasModel
 
-"""A Class which set up webdriver and created empty lists to store the data collected from webscrapping """
+"""A Class which set up webdriver and creates empty lists to store the data collected from web scrapping """
 
 
 class SetUpDriverAndStoreData:
@@ -28,6 +30,7 @@ class SetUpDriverAndStoreData:
 
 class GuiSearchWindow(SetUpDriverAndStoreData):
     def __init__(self):
+        self.df = None
         super().__init__()
 
     def setupUi(self, MainWindow):
@@ -177,16 +180,6 @@ class GuiSearchWindow(SetUpDriverAndStoreData):
         self.search_box_btn.setFont(font)
         self.search_box_btn.setObjectName("search_box_btn")
 
-        # RESULTS BUTTON
-        self.results_btn = QtWidgets.QPushButton(self.centralwidget)
-        self.results_btn.setGeometry(QtCore.QRect(160, 500, 181, 41))
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        font.setBold(True)
-        font.setWeight(75)
-        self.results_btn.setFont(font)
-        self.results_btn.setObjectName("results_btn")
-
         # JOB TYPE LABEL
         self.label_6 = QtWidgets.QLabel(self.centralwidget)
         self.label_6.setGeometry(QtCore.QRect(370, 10, 491, 41))
@@ -241,7 +234,6 @@ class GuiSearchWindow(SetUpDriverAndStoreData):
         self.contract_chk_box.setText(_translate("MainWindow", "Contract"))
         self.internship_chk_box_2.setText(_translate("MainWindow", "Internship"))
         self.search_box_btn.setText(_translate("MainWindow", "Search"))
-        self.results_btn.setText(_translate("MainWindow", "Show Results"))
         self.label_6.setText(_translate("MainWindow", "Job search application for LinkedIn "))
         self.other_chk_box.setText(_translate("MainWindow", "Other"))
 
@@ -253,27 +245,27 @@ class GuiSearchWindow(SetUpDriverAndStoreData):
         self.driver.get(f"https://www.linkedin.com/jobs/search?keywords={job_title}&location={location}"
                         f"&geoId=&trk=public_jobs_jobs-search-bar_search-submit&position=1&pageNum=0")
 
-        print("Connected to the website")
+        print("1.Connected to the website....Done!")
         self.filter_date_jobs_posted()
-        print("Done filtering jobs by date ...")
+        print("2.Filtering jobs by date ...Done!")
         self.filter_job_type()
-        print("Done filtering jobs by job type ...")
+        print("3.Filtering jobs by job type ...Done!")
         self.filter_experience_level()
-        print("Done filtering jobs by job experience level ...")
+        print("4.Filtering jobs by job experience level ...Done!")
         self.filter_job_location()
-        print("Done filtering jobs by job location ...")
+        print("5.Filtering jobs by job location ...Done!")
         self.get_total_search_results()
-        print("Done collecting data step 1 ...")
+        print("6.Collecting data step 1 ...Done!")
         self.auto_scroll_page()
-        print("Done auto scroll page ...")
+        print("7.Auto scroll page ...Done!")
         self.get_search_results()
-        print("Done collecting data step 2 ...")
+        print("8.Collecting data step 2 ...Done!")
         self.make_dataframe()
-        print("Done making data frame ...")
+        print("9.Making data frame ...Done!")
         self.save_csv_file()
-        print("Done making csv file ...")
-        #self.driver.close()
-        print("Finished ....data collected and saved to csv file")
+        print("10.Making csv file ...Done!")
+        # self.driver.close()
+        print("11.Data collected and saved to csv file...Done!")
 
     def click_done_btn_date_posted(self):
         self.driver.find_element(By.XPATH,
@@ -473,7 +465,7 @@ class GuiSearchWindow(SetUpDriverAndStoreData):
         jobs_num = int(jobs_num)
 
         # For testing - check the total number of results
-        print(jobs_num)
+        print(f"Total number of jobs is {jobs_num}")
         return jobs_num
 
     def auto_scroll_page(self):
@@ -538,15 +530,18 @@ class GuiSearchWindow(SetUpDriverAndStoreData):
         df_final = temp_2.join(df_links)
         df_final2 = df_final.join(df_location)
 
-
-        # TODO - make link clickable in DF
+        # Show results window GUI
         self.Dialog = QtWidgets.QDialog()
         self.ui_results = ResultsGui()
         self.ui_results.setupUi(self.Dialog)
         self.Dialog.show()
 
+        # Make pandas model and show results in tableView
         model = PandasModel(df_final2)
         self.ui_results.tableView.setModel(model)
+        self.df = df_final2
+
+        self.ui_results.filter_btn.clicked.connect(self.filter_results_btn_clicked)
 
         return df_final2
 
@@ -557,15 +552,70 @@ class GuiSearchWindow(SetUpDriverAndStoreData):
 
         # Filename
         filename = self.ui_job_title.text()
-        # Path
 
+        # Path
         path = os.getcwd() + "\\" + output_dir + "\\" + filename + ".csv"
 
         # Save to *.csv
         df = self.make_dataframe().to_csv(path)
 
-
         return df
+
+    def show_filter_column_window(self):
+        self.filter_col = QtWidgets.QDialog()
+        self.ui_filter_col = FilterByColumn()
+        self.ui_filter_col.setupUi(self.filter_col)
+        self.filter_col.show()
+
+    def show_filter_row_window(self):
+        self.filter_row = QtWidgets.QDialog()
+        self.ui_filter_row = FilterByRow()
+        self.ui_filter_row.setupUi(self.filter_row)
+        self.filter_row.show()
+
+    def filter_results_btn_clicked(self):
+        if self.ui_results.filter_col_btn.isChecked():
+            # Display GUI for column search
+            self.show_filter_column_window()
+
+            # Click the show results button
+            self.ui_filter_col.col_results_btn.clicked.connect(self.filter_results_by_col)
+
+        if self.ui_results.filter_row_btn.isChecked():
+            # Display GUI for row  search
+            self.show_filter_row_window()
+
+            # Click the show results button
+            self.ui_filter_row.row_results_btn.clicked.connect(self.filter_results_by_row)
+
+    def filter_results_by_col(self):
+        # Get user input
+        col_name = self.ui_filter_col.ui_column_name.text()
+
+        # Select column based on user input
+        df = self.df[col_name]
+
+        # Make df
+        temp = pd.DataFrame(df)
+
+        # Make pandas model and displays it
+        model = PandasModel(temp)
+        self.ui_results.tableView.setModel(model)
+
+    def filter_results_by_row(self):
+        # Get user input
+        col_name = self.ui_filter_row.ui_column_name.text()
+        row_name = self.ui_filter_row.ui_row_name.text()
+
+        # Select column and row  based on user input
+        df = self.df.loc[self.df[col_name] == row_name]
+
+        # Make df
+        temp = pd.DataFrame(df)
+
+        # Make pandas model and displays it
+        model = PandasModel(temp)
+        self.ui_results.tableView.setModel(model)
 
 
 if __name__ == "__main__":
