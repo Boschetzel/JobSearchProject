@@ -8,7 +8,7 @@
 
 ## About
 
-The JobSearchApplication is a simple project for searching LinkedIn jobs based on a filter the user chooses.
+The JobSearchApplication is a  project for searching LinkedIn jobs based on a filter the user chooses.
 After the user enters the filters in the GUI the results are saved in a *.csv file.
 
 Note: the auto search in done without login credentials on LinkedIn website as web scrapping with an account 
